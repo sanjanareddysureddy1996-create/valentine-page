@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        background-color: #ffc0cb;
+        overflow: hidden;
+    }
+
+    /* floating hearts background */
+    .heart {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: red;
+        transform: rotate(45deg);
+        animation: float 10s linear infinite;
+        opacity: 0.6;
+    }
+
+    .heart::before,
+    .heart::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: red;
+        border-radius: 50%;
+    }
+
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
+
+    @keyframes float {
+        from { transform: translateY(100vh) rotate(45deg); }
+        to { transform: translateY(-10vh) rotate(45deg); }
+    }
+
+    .card {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        z-index: 2;
+        max-width: 400px;
+        position: relative;
+    }
+
+    h1 { color: #d1005d; }
+
+    button {
+        padding: 12px 24px;
+        margin: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.2s, left 0.2s, top 0.2s;
+        position: relative;
+    }
+
+    button:hover {
+        transform: scale(1.1);
+    }
+
+    .yes { background: #ff4d6d; color: white; }
+    .no { background: #999; color: white; }
+
+    .big-heart {
+        width: 150px;
+        height: 150px;
+        background: red;
+        transform: rotate(45deg);
+        margin: 40px auto;
+        position: relative;
+    }
+
+    .big-heart::before,
+    .big-heart::after {
+        content: "";
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background: red;
+        border-radius: 50%;
+    }
+
+    .big-heart::before { top: -75px; left: 0; }
+    .big-heart::after { left: -75px; top: 0; }
+</style>
+</head>
+<body>
+
+<div class="card" id="card">
+    <h1>Will you be my valentine?</h1>
+    <button class="yes" onclick="sayYes()">Yes</button>
+    <button class="no" id="noBtn" onclick="sayNo()">No</button>
+</div>
+
+<script>
+let noClickCount = 0;
+
+function sayNo() {
+    const btn = document.getElementById("noBtn");
+
+    // First two clicks — run away silently
+    if (noClickCount < 2) {
+        const card = document.getElementById("card");
+        const rect = card.getBoundingClientRect();
+
+        const maxX = rect.width - 100;
+        const maxY = rect.height - 60;
+
+        btn.style.position = "absolute";
+        btn.style.left = Math.random() * maxX + "px";
+        btn.style.top = Math.random() * maxY + "px";
+
+        noClickCount++;
+        return;
+    }
+
+    // Third click — stays and shows warning
+    alert("How dare you? Choose your option carefully again 😤");
+}
+
+function sayYes() {
+    document.getElementById("card").innerHTML = `
+        <h1>Yay got my valentine ❤️</h1>
+        <div class="big-heart"></div>
+    `;
+}
+
+/* create floating hearts */
+for (let i = 0; i < 40; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (6 + Math.random() * 6) + 's';
+    heart.style.opacity = Math.random();
+    document.body.appendChild(heart);
+}
+</script>
+
+</body>
+</html>
